@@ -4,7 +4,7 @@ import pandas as pd
 # IMPORT SECTION
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plit
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -35,3 +35,26 @@ scaler = StandardScaler()
 # we are going to scale ONLY the features (i.e. the X) and NOT the y!
 X_train_scaled = scaler.fit_transform(X_train) # fitting to X_train and transforming them
 X_test_scaled = scaler.transform(X_test) # transforming X_test. DO NOT FIT THEM!
+
+# creating the model
+model = RandomForestClassifier(n_estimators=100, random_state=101)
+# training the model
+model.fit(X_train_scaled, y_train)
+
+# prediction over the test set
+y_pred = model.predict(X_test_scaled)
+
+# evaluating the model
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\n the Accuracy of the model is: {accuracy*100:.2f}")
+
+#classification report
+print(f"\nclassification report: \n{classification_report(y_test, y_pred)}")
+
+#confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred)
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels = dataset.target_names, yticklabels = dataset.target_names)
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.show()
